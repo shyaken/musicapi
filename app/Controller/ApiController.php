@@ -70,7 +70,7 @@ class ApiController extends AppController {
      * @param mixed What page to display
      * @return void
      * @throws NotFoundException When the view file could not be found
-     * 	or MissingViewException in debug mode.
+     *  or MissingViewException in debug mode.
      */
     public function index() {
         die("say something");
@@ -101,9 +101,10 @@ class ApiController extends AppController {
         //foreach($client as $key => $value){
         //    $data .= $key." => ".$value." <br/>";
         //}
-        $data = json_encode($client);
-        $this->set('data',$data);
-        $this->render('json_data');
+        //$data = json_encode($client);
+        //$this->set('data',$data);
+        //$this->render('json_data');
+        return array_merge($request,$client);
     }
 
     public function getHostPlaylist() {
@@ -123,6 +124,18 @@ class ApiController extends AppController {
     
     public function getSongLyric() {
         
+    }
+
+    public function search(){
+        //die('hered');
+        $params = $this->getData();
+        $data = array();
+        if(isset($params['q'])){
+            $data = $this->Api->searchForQuery($params);
+        }
+        $dataStr = json_encode($data);
+        $this->set('data',$dataStr);
+        $this->render("json_data");
     }
     
 }
